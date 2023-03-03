@@ -1,13 +1,36 @@
 import "./App.css";
 import Header from "../components/Header/Header";
-import LogIn from "../components/Auth/LogIn";
 import Footer from "../components/Footer/Footer";
-import ParticlesComponent from "../components/Particles/ParticlesComponent";
 import { loadFull } from "tsparticles";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Particles from "react-tsparticles";
+import options from "./particles.config";
+import Auth from "../components/Auth/Auth";
+import { useState } from "react";
+import Home from "../components/Home/Home";
 
 const App = () => {
+  const changeAuthHandler = () => {
+    if (auth) {
+      setAuth(false);
+    } else {
+      setAuth(true);
+    }
+  };
+
+  const [view, setView] = useState(
+    <Auth changeAuthHandler={changeAuthHandler} />
+  );
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    if (!auth) {
+      setView(<Auth changeAuthHandler={changeAuthHandler} />);
+    } else {
+      setView(<Home />);
+    }
+  }, [auth]);
+
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
     await loadFull(engine);
@@ -23,81 +46,11 @@ const App = () => {
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: "#cbd5e1",
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              resize: true,
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#000",
-            },
-            links: {
-              color: "#000",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            collisions: {
-              enable: true,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 6,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }}
+        options={options}
+        className="fixed -z-10"
       />
-      <Header />
-      <LogIn />
+      <Header auth={auth} changeAuthHandler={changeAuthHandler} />
+      {view}
       <Footer />
     </div>
   );

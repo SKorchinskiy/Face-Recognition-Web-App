@@ -1,19 +1,20 @@
 import "./Auth.css";
+import "./Auth.css";
 
-const LogIn = ({ formChangeHandler, changeAuthHandler }) => {
+const SignUp = ({ formChangeHandler, changeAuthHandler }) => {
   return (
-    <div className="bg-slate-500/50 px-16 py-16 rounded-3xl shadow-2xl">
+    <div className=" px-16 py-16 bg-slate-500/50 rounded-3xl shadow-2xl">
       <div className="flex justify-between mb-4">
         <button
           name="login"
-          className="text-center hover:pointer border border-white/50 px-4 m-1 h-12 hover:scale-105 duration-100 rounded-xl active:scale-95 bg-slate-300/60"
+          className="text-center hover:pointer border border-white/50 px-4 m-1 h-12 hover:scale-105 duration-100 rounded-xl active:scale-95"
+          onClick={formChangeHandler}
         >
           Login
         </button>
         <button
           name="signup"
-          className="text-center hover:pointer border border-white/50 px-4 m-1 h-12 hover:scale-105 duration-100 rounded-xl active:scale-95"
-          onClick={formChangeHandler}
+          className="text-center hover:pointer border border-white/50 px-4 m-1 h-12 hover:scale-105 duration-100 rounded-xl active:scale-95 bg-slate-300/60"
         >
           Signup
         </button>
@@ -32,17 +33,17 @@ const LogIn = ({ formChangeHandler, changeAuthHandler }) => {
           placeholder="Password"
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full">
         <button
           name="submit"
-          className="bg-slate-200/90 px-4 h-10 m-4 rounded-3xl w-2/3 shadow-2xl active:scale-95 duration-75 hover:scale-105"
+          className="border px-4 m-4 rounded-full border-white/50 w-2/3 h-10 mt-4 bg-slate-200/90 active:scale-95 duration-75 hover:scale-105"
           onClick={changeAuthHandler}
         >
-          Login
+          SignUp
         </button>
       </div>
     </div>
   );
 };
 
-export default LogIn;
+export default SignUp;
