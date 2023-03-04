@@ -1,14 +1,8 @@
 import "./Image.css";
 
-const Image = ({ search, url }) => {
+const Image = ({ url }) => {
   return (
-    <div className="h-[400px] w-auto m-10">
-      {search ? (
-        <img src={url} alt={"pics"} className={"h-full w-full"} />
-      ) : (
-        <></>
-      )}
-    </div>
+    <img id="uploadedImg" src={url} alt={"pics"} className={"h-full w-full"} />
   );
 };
 

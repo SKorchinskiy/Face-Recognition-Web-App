@@ -1,6 +1,7 @@
 import "./Home.css";
 import { useState } from "react";
 import Image from "../Image/Image";
+import FaceRecognition from "../FaceRecognition/FaceRecognition";
 
 const Home = () => {
   const onUrlChangeHandler = (event) => {
@@ -27,13 +28,21 @@ const Home = () => {
           className="border ml-4 p-4 h-20 w-28 rounded-full hover:scale-105 active:scale-95 duration-75 bg-slate-50 hover:bg-slate-100"
           onClick={() => {
             setSearch(true);
-            console.log(search, url);
           }}
         >
           Detect
         </button>
       </div>
-      <Image search={search} url={url} />
+      <div className="relative h-[400px] w-auto m-10">
+        {search ? (
+          <>
+            <Image search={search} url={url} />
+            <FaceRecognition url={url} />
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };
