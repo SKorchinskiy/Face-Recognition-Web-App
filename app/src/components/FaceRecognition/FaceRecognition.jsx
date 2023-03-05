@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import "./FaceRecognition.css";
-import RequestOptions from "./requestOptions";
 import Clarifai from "clarifai";
 
 const app = new Clarifai.App({
-  apiKey: "ce8d314c48f64d6b88c2a73045b01b04",
+  apiKey: "YOUR API",
 });
 
 const FaceRecognition = ({ url }) => {
   const [boxes, setBoxes] = useState();
   useEffect(() => {
-    const requestOptions = RequestOptions(url);
+    console.log("ATTENTION!!!! provide custom apiKey");
     const fetchData = async () => {
       app.models
         .predict(
