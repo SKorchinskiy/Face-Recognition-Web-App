@@ -8,9 +8,9 @@ const app = express();
 let users = [];
 let id = 0;
 
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
 
 const hashPassword = async (password, salt) => {
   return await bcrypt.hash(password, salt);
@@ -48,12 +48,14 @@ app.get("/users/:id", (req, res) => {
   const user = users.find((user) => id === user.id);
   if (user) {
     res.json(user);
+  } else {
+    res.json(null);
   }
-  res.json();
 });
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body);
   const user = getUserByUsername(username);
   if (user) {
     try {
@@ -70,22 +72,32 @@ app.post("/login", async (req, res) => {
     } catch (err) {
       console.log(err.message);
     }
+  } else {
+    res.json(null);
   }
-  res.json();
 });
 
 app.post("/signup", async (req, res) => {
+  console.log(req.body);
   const { username, email, password } = req.body;
   const alreadyExists = getUserByUsername(username) ? true : false;
   if (alreadyExists) {
-    res.json();
+    console.log("dropped here");
+    res.status(400).json(null);
+  } else {
+    const hashedPassword = await hashPassword(password, 10);
+    id += 1;
+    const user = createUser({
+      id,
+      username,
+      email,
+      hashedPassword,
+      entries: 0,
+    });
+    res.status(200).json({
+      ...user,
+    });
   }
-  const hashedPassword = await hashPassword(password, 10);
-  id += 1;
-  const user = createUser({ id, username, email, hashedPassword, entries: 0 });
-  res.json({
-    ...user,
-  });
 });
 
 app.put("/image", (req, res) => {

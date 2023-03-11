@@ -10,7 +10,14 @@ import { useState } from "react";
 import Home from "../components/Home/Home";
 
 const App = () => {
-  const changeAuthHandler = () => {
+  const [id, setId] = useState(0);
+  const [username, setUsername] = useState("");
+  const [entries, setEntries] = useState(0);
+
+  const changeAuthHandler = (id, username, entries) => {
+    setId(id);
+    setUsername(username);
+    setEntries(entries);
     if (auth) {
       setAuth(false);
     } else {
@@ -27,7 +34,7 @@ const App = () => {
     if (!auth) {
       setView(<Auth changeAuthHandler={changeAuthHandler} />);
     } else {
-      setView(<Home />);
+      setView(<Home id={id} username={username} entries={entries} />);
     }
   }, [auth]);
 

@@ -1,9 +1,9 @@
 import "./Home.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "../Image/Image";
 import FaceRecognition from "../FaceRecognition/FaceRecognition";
 
-const Home = () => {
+const Home = ({ id, username, entries }) => {
   const onUrlChangeHandler = (event) => {
     const value = event.target.value;
     // ATTENTION! NEED TO ADD VALIDATION OF URL CORRECTNESS
@@ -11,10 +11,32 @@ const Home = () => {
     setUrl(value);
   };
 
+  const [count, setCount] = useState(entries);
   const [url, setUrl] = useState("");
   const [search, setSearch] = useState(false);
+
+  useEffect(() => {
+    const increaseUserEntries = async () => {
+      const data = await fetch("http://localhost:3001/image", {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+      const user = await data.json();
+      setCount(user.entries);
+    };
+    if (search) {
+      increaseUserEntries();
+    }
+  }, [search, id]);
+
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
+      <div className="text-4xl mb-10">
+        {username}, your entries scrore is <b>{count}</b>
+      </div>
       <div className="flex justify-center w-full">
         <input
           type="text"
